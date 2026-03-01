@@ -21,29 +21,29 @@
 <body>
 
 <div class="container">
-    <h2 style="color:#24A1DE;">Task Center</h2>
+    <h2 style="color:#24A1DE;"><i class="fas fa-coins"></i> Earn Cash Task Center</h2>
     
     <div class="task-list">
-        <button class="task-btn" onclick="loadVideo(1)">Video 1</button>
-        <button class="task-btn" onclick="loadVideo(2)">Video 2</button>
-        <button class="task-btn" onclick="loadVideo(3)">Video 3</button>
-        <button class="task-btn" onclick="loadVideo(4)">Video 4</button>
-        <button class="task-btn" onclick="loadVideo(5)">Video 5</button>
-        <button class="task-btn" onclick="loadVideo(6)">Video 6</button>
-        <button class="task-btn" onclick="loadVideo(7)">Video 7</button>
-        <button class="task-btn" onclick="loadVideo(8)">Video 8</button>
-        <button class="task-btn" onclick="loadVideo(9)">Video 9</button>
-        <button class="task-btn" onclick="loadVideo(10)">Video 10</button>
+        <button class="task-btn" onclick="loadVideo(1)">Task 1</button>
+        <button class="task-btn" onclick="loadVideo(2)">Task 2</button>
+        <button class="task-btn" onclick="loadVideo(3)">Task 3</button>
+        <button class="task-btn" onclick="loadVideo(4)">Task 4</button>
+        <button class="task-btn" onclick="loadVideo(5)">Task 5</button>
+        <button class="task-btn" onclick="loadVideo(6)">Task 6</button>
+        <button class="task-btn" onclick="loadVideo(7) ">Task 7</button>
+        <button class="task-btn" onclick="loadVideo(8)">Task 8</button>
+        <button class="task-btn" onclick="loadVideo(9)">Task 9</button>
+        <button class="task-btn" onclick="loadVideo(10)">Task 10</button>
         
-        <button class="task-btn ad-task" onclick="loadLinkTask(11)">Link 11</button>
-        <button class="task-btn ad-task" onclick="loadLinkTask(12)">Link 12</button>
-        <button class="task-btn ad-task" onclick="loadLinkTask(13)">Link 13</button>
-        <button class="task-btn ad-task" onclick="loadLinkTask(14)">Link 14</button>
-        <button class="task-btn ad-task" onclick="loadLinkTask(15)">Link 15</button>
+        <button class="task-btn ad-task" onclick="loadLinkTask(11)">Task 11</button>
+        <button class="task-btn ad-task" onclick="loadLinkTask(12)">Task 12</button>
+        <button class="task-btn ad-task" onclick="loadLinkTask(13)">Task 13</button>
+        <button class="task-btn ad-task" onclick="loadLinkTask(14)">Task 14</button>
+        <button class="task-btn ad-task" onclick="loadLinkTask(15)">Task 15</button>
     </div>
 
     <div id="display-area">
-        <h3 id="task-title">টাস্ক লোড হচ্ছে...</h3>
+        <h3 id="task-title">লোড হচ্ছে...</h3>
         
         <div id="video-content" style="display:none;">
             <div class="video-box"><div id="player"></div></div>
@@ -52,14 +52,14 @@
 
         <div id="link-content" style="display:none;">
             <i class="fas fa-external-link-alt" style="font-size: 50px; color:#ff7675;"></i>
-            <div id="l-instruction">নিচের বাটনে ক্লিক করে ওয়েবসাইট ভিজিট করুন</div>
+            <div id="l-instruction" style="margin-top:10px;">নিচের বাটনে ক্লিক করে কাজ শুরু করুন</div>
             <button id="visit-trigger" class="visit-btn">ভিজিট করুন</button>
             <div id="a-timer" class="timer-display" style="display:none;">অপেক্ষা করুন: ১০ সেকেন্ড</div>
         </div>
         
         <div id="code-box">
-            🎉 কোড: <span id="final-code"></span>
-            <p style="font-size: 14px; font-weight: normal;">স্ক্রিনশট নিয়ে প্যানেলে জমা দিন।</p>
+            🎉 আপনার সিক্রেট কোড: <span id="final-code"></span>
+            <p style="font-size: 14px; font-weight: normal; margin-top:10px;">এই কোডটির স্ক্রিনশট নিয়ে আপনার প্যানেলে জমা দিন।</p>
         </div>
     </div>
 </div>
@@ -68,12 +68,18 @@
 <script>
     let player, timerInt, timeLeft, isDone = false;
     
+    // আপনার দেওয়া ডেটা (ভিডিও আইডি এবং লিংক)
     const data = {
-        1: {vid:'rECq3Qcj6oU', t:180, c:'TCP-8821-V1'}, 2: {vid:'zWTad9RBYH4', t:180, c:'TCP-4509-V2'},
-        3: {vid:'DAxYNwuxq7M', t:180, c:'TCP-3112-V3'}, 4: {vid:'dWC7jsxgW2Y', t:180, c:'TCP-9023-V4'},
-        5: {vid:'O4i4kN_A68U', t:180, c:'TCP-6674-V5'}, 6: {vid:'cPjITHPKHW0', t:300, c:'TCP-1250-V6'},
-        7: {vid:'4FAWGwaL3dc', t:300, c:'TCP-7731-V7'}, 8: {vid:'PujqH29FuCM', t:300, c:'TCP-5502-V8'},
-        9: {vid:'4JTlUw6MEug', t:300, c:'TCP-4489-V9'}, 10: {vid:'cZU6GZT7wio', t:300, c:'TCP-2026-V10'},
+        1: {vid:'rECq3Qcj6oU', t:180, c:'TCP-8821-V1'}, 
+        2: {vid:'zWTad9RBYH4', t:180, c:'TCP-4509-V2'},
+        3: {vid:'DAxYNwuxq7M', t:180, c:'TCP-3112-V3'}, 
+        4: {vid:'dWC7jsxgW2Y', t:180, c:'TCP-9023-V4'},
+        5: {vid:'O4i4kN_A68U', t:180, c:'TCP-6674-V5'}, 
+        6: {vid:'cPjITHPKHW0', t:300, c:'TCP-1250-V6'},
+        7: {vid:'4FAWGwaL3dc', t:300, c:'TCP-7731-V7'}, 
+        8: {vid:'PujqH29FuCM', t:300, c:'TCP-5502-V8'},
+        9: {vid:'4JTlUw6MEug', t:300, c:'TCP-4489-V9'}, 
+        10: {vid:'cZU6GZT7wio', t:300, c:'TCP-2026-V10'},
         11: {url:'https://chonderranimayapori.blogspot.com/', c:'ADS-9910-X1'},
         12: {url:'https://lyricloopzone.blogspot.com/2025/12/tumi-toh-sukhei-acho-bondhu-song-lyrics.html?m=1', c:'ADS-7720-X2'},
         13: {url:'https://t.me/ChonderRaniMayapori', c:'ADS-5530-X3'},
@@ -88,7 +94,7 @@
     function loadVideo(id) {
         reset();
         timeLeft = data[id].t;
-        document.getElementById('task-title').innerText = "Video Task " + id;
+        document.getElementById('task-title').innerText = "Task #" + id + " (ভিডিও)";
         document.getElementById('video-content').style.display = 'block';
         document.getElementById('final-code').innerText = data[id].c;
         document.getElementById('v-timer').innerText = "অপেক্ষা করুন: " + timeLeft + "s";
@@ -97,20 +103,16 @@
 
     function loadLinkTask(id) {
         reset();
-        document.getElementById('task-title').innerText = "Link Task " + (id-10);
+        document.getElementById('task-title').innerText = "Task #" + id + " (লিংক)";
         document.getElementById('link-content').style.display = 'block';
         document.getElementById('final-code').innerText = data[id].c;
         
         let visitBtn = document.getElementById('visit-trigger');
         visitBtn.onclick = function() {
-            // ১. ওয়েবসাইট ওপেন হবে
             window.open(data[id].url, '_blank');
-            
-            // ২. বাটন লুকিয়ে টাইমার শুরু হবে
             visitBtn.style.display = 'none';
-            document.getElementById('l-instruction').innerText = "লিংক ভিজিট শুরু হয়েছে। ফিরে এসে অপেক্ষা করুন।";
+            document.getElementById('l-instruction').innerText = "লিংক ভিজিট শুরু হয়েছে। এই পেজে ফিরে এসে ১০ সেকেন্ড অপেক্ষা করুন।";
             document.getElementById('a-timer').style.display = 'block';
-            
             startAdTimer(10);
         };
     }
@@ -136,7 +138,7 @@
         document.getElementById('link-content').style.display = 'none';
         document.getElementById('code-box').style.display = 'none';
         document.getElementById('visit-trigger').style.display = 'inline-block';
-        document.getElementById('l-instruction').innerText = "নিচের বাটনে ক্লিক করে ওয়েবসাইট ভিজিট করুন";
+        document.getElementById('l-instruction').innerText = "নিচের বাটনে ক্লিক করে কাজ শুরু করুন";
         document.getElementById('a-timer').style.display = 'none';
         if(player && player.stopVideo) player.stopVideo();
     }
