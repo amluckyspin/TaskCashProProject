@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earn Cash - Task Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 10px; }
+        .container { max-width: 700px; margin: auto; background: #fff; border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .task-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .task-btn { background: #24A1DE; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 13px; transition: 0.3s; }
+        .task-btn:hover { background: #1c8abd; }
+        .task-btn.ad-task { background: #6c5ce7; }
+        
+        #display-area { display: none; margin-top: 20px; border-top: 2px solid #eee; padding-top: 20px; text-align: center; }
+        .video-box { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 10px; overflow: hidden; }
+        #timer-box { font-size: 28px; color: #d32f2f; font-weight: bold; margin: 15px 0; background: #fff5f5; padding: 15px; border-radius: 10px; border: 1px solid #ffcdd2; }
+        #code-box { display: none; background: #2ecc71; color: white; padding: 25px; border-radius: 10px; font-size: 24px; font-weight: bold; box-shadow: 0 4px 10px rgba(46,204,113,0.3); }
+        
+        #redirect-box { display: none; padding: 40px 20px; }
+        .redirect-btn { background: #ff7675; color: white; padding: 15px 30px; border-radius: 30px; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 20px; font-size: 18px; }
+        .article-text { text-align: justify; color: #555; font-size: 14px; margin-top: 20px; line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 style="text-align:center; color:#24A1DE;"><i class="fas fa-tasks"></i> Task Center</h2>
+    
+    <div class="task-list">
+        <script>
+            for(let i=1; i<=10; i++) {
+                document.write(`<button class="task-btn" onclick="loadVideoTask(${i})">Video Task ${i}</button>`);
+            }
+        </script>
+        <script>
+            for(let i=11; i<=15; i++) {
+                document.write(`<button class="task-btn ad-task" onclick="loadAdTask(${i})">Link Task ${i-10}</button>`);
+            }
+        </script>
+    </div>
+
+    <div id="display-area">
+        <h3 id="task-title">লোড হচ্ছে...</h3>
+        
+        <div id="video-content">
+            <div class="video-box"><div id="player"></div></div>
+            <div id="timer-box">ভিডিও প্লে করুন...</div>
+        </div>
+
+        <div id="redirect-box">
+            <i class="fas fa-link" style="font-size: 60px; color: #ff7675;"></i>
+            <h3>লিংকটি ভিজিট করুন</h3>
+            <div id="ad-timer-ui" style="font-size: 24px; color: #d32f2f; font-weight: bold; margin: 15px 0;">অপেক্ষা করুন: ১০ সেকেন্ড</div>
+            <a href="#" id="ad-link" class="redirect-btn" style="display:none;" target="_blank">GO TO LINK</a>
+        </div>
+        
+        <div id="code-box">
+            🎉 কোড: <span id="final-code"></span>
+            <p style="font-size: 14px; font-weight: normal; margin-top: 10px;">স্ক্রিনশট নিয়ে আপনার প্যানেলে জমা দিন।</p>
+        </div>
+
+        <div class="article-text">
+            <p>আমাদের এই প্ল্যাটফর্মে কাজ করার জন্য আপনাকে অবশ্যই নিয়মগুলো মেনে চলতে হবে। ভিডিও টাস্কের ক্ষেত্রে ভিডিওটি সম্পূর্ণ সময় জুড়ে দেখতে হবে এবং কোনোভাবে পজ বা স্কিপ করা যাবে না। লিংক টাস্কের ক্ষেত্রে লিংকে ক্লিক করে ১০ সেকেন্ড অপেক্ষা করতে হবে। সততার সাথে কাজ করলে পেমেন্ট নিশ্চিত পাবেন। ধন্যবাদ।</p>
+        </div>
+    </div>
+</div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+    let player, timerInt, timeLeft = 0, isDone = false;
+    
+    const taskData = {
+        // ভিডিও টাস্ক ১-৫ (৩ মিনিট / ১৮০ সে.)
+        1: { vid: 'rECq3Qcj6oU', time: 180, code: 'TCP-8821-V1' },
+        2: { vid: 'zWTad9RBYH4', time: 180, code: 'TCP-4509-V2' },
+        3: { vid: 'DAxYNwuxq7M', time: 180, code: 'TCP-3112-V3' },
+        4: { vid: 'dWC7jsxgW2Y', time: 180, code: 'TCP-9023-V4' },
+        5: { vid: 'O4i4kN_A68U', time: 180, code: 'TCP-6674-V5' },
+        // ভিডিও টাস্ক ৬-১০ (৫ মিনিট / ৩০০ সে.)
+        6: { vid: 'cPjITHPKHW0', time: 300, code: 'TCP-1250-V6' },
+        7: { vid: '4FAWGwaL3dc', time: 300, code: 'TCP-7731-V7' },
+        8: { vid: 'PujqH29FuCM', time: 300, code: 'TCP-5502-V8' },
+        9: { vid: '4JTlUw6MEug', time: 300, code: 'TCP-4489-V9' },
+        10: { vid: 'cZU6GZT7wio', time: 300, code: 'TCP-2026-V10' },
+        // লিংক টাস্ক ১১-১৫ (১০ সেকেন্ড)
+        11: { url: 'https://chonderranimayapori.blogspot.com/', time: 10, code: 'ADS-9910-X1' },
+        12: { url: 'https://lyricloopzone.blogspot.com/2025/12/tumi-toh-sukhei-acho-bondhu-song-lyrics.html?m=1', time: 10, code: 'ADS-7720-X2' },
+        13: { url: 'https://t.me/ChonderRaniMayapori', time: 10, code: 'ADS-5530-X3' },
+        14: { url: 'https://t.me/GmailSellBDChannel', time: 10, code: 'ADS-3340-X4' },
+        15: { url: 'https://t.me/SpinIncomeBD_bot?start=r00125815586', time: 10, code: 'ADS-1150-X5' }
+    };
+
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', { height: '100%', width: '100%', videoId: '', events: { 'onStateChange': onPlayerStateChange } });
+    }
+
+    function loadVideoTask(id) {
+        resetUI();
+        timeLeft = taskData[id].time;
+        document.getElementById('task-title').innerText = "Video Task #" + id + " (" + (timeLeft/60) + " min)";
+        document.getElementById('video-content').style.display = 'block';
+        document.getElementById('timer-box').innerText = "অপেক্ষা করুন: " + timeLeft + "s";
+        document.getElementById('final-code').innerText = taskData[id].code;
+        player.loadVideoById(taskData[id].vid);
+    }
+
+    function loadAdTask(id) {
+        resetUI();
+        timeLeft = taskData[id].time;
+        document.getElementById('task-title').innerText = "Link Task #" + (id-10);
+        document.getElementById('redirect-box').style.display = 'block';
+        document.getElementById('final-code').innerText = taskData[id].code;
+        
+        clearInterval(timerInt);
+        timerInt = setInterval(() => {
+            timeLeft--;
+            document.getElementById('ad-timer-ui').innerText = "অপেক্ষা করুন: " + timeLeft + " সেকেন্ড";
+            if(timeLeft <= 0) {
+                clearInterval(timerInt);
+                document.getElementById('ad-timer-ui').style.display = 'none';
+                let btn = document.getElementById('ad-link');
+                btn.href = taskData[id].url;
+                btn.style.display = 'inline-block';
+                btn.onclick = () => {
+                    document.getElementById('redirect-box').style.display = 'none';
+                    document.getElementById('code-box').style.display = 'block';
+                };
+            }
+        }, 1000);
+    }
+
+    function resetUI() {
+        clearInterval(timerInt);
+        isDone = false;
+        document.getElementById('display-area').style.display = 'block';
+        document.getElementById('video-content').style.display = 'none';
+        document.getElementById('redirect-box').style.display = 'none';
+        document.getElementById('code-box').style.display = 'none';
+        document.getElementById('ad-timer-ui').style.display = 'block';
+        if(player && player.stopVideo) player.stopVideo();
+        window.scrollTo({ top: document.getElementById('display-area').offsetTop, behavior: 'smooth' });
+    }
+
+    function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING && !isDone) {
+            timerInt = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer-box').innerText = "অপেক্ষা করুন: " + timeLeft + "s";
+                if(timeLeft <= 0) {
+                    isDone = true; clearInterval(timerInt);
+                    document.getElementById('timer-box').style.display = 'none';
+                    document.getElementById('code-box').style.display = 'block';
+                }
+            }, 1000);
+        } else { clearInterval(timerInt); }
+    }
+</script>
+</body>
+</html>
