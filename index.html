@@ -15,7 +15,7 @@
         .video-box { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden; }
         .timer-display { font-size: 26px; color: #d32f2f; font-weight: bold; margin: 20px 0; padding: 15px; background: #fff5f5; border-radius: 12px; border: 1px solid #ffcdd2; }
         #code-box { display: none; background: #2ecc71; color: white; padding: 25px; border-radius: 15px; font-size: 22px; font-weight: bold; margin-top: 20px; }
-        .redirect-btn { background: #ff7675; color: white; padding: 15px 35px; border-radius: 40px; text-decoration: none; font-weight: bold; display: inline-block; font-size: 18px; margin-top: 15px; }
+        .visit-btn { background: #ff7675; color: white; padding: 15px 35px; border-radius: 40px; text-decoration: none; font-weight: bold; display: inline-block; font-size: 18px; margin-top: 15px; cursor: pointer; border: none; }
     </style>
 </head>
 <body>
@@ -35,11 +35,11 @@
         <button class="task-btn" onclick="loadVideo(9)">Video 9</button>
         <button class="task-btn" onclick="loadVideo(10)">Video 10</button>
         
-        <button class="task-btn ad-task" onclick="loadAd(11)">Link 1</button>
-        <button class="task-btn ad-task" onclick="loadAd(12)">Link 2</button>
-        <button class="task-btn ad-task" onclick="loadAd(13)">Link 3</button>
-        <button class="task-btn ad-task" onclick="loadAd(14)">Link 4</button>
-        <button class="task-btn ad-task" onclick="loadAd(15)">Link 5</button>
+        <button class="task-btn ad-task" onclick="loadLinkTask(11)">Link 1</button>
+        <button class="task-btn ad-task" onclick="loadLinkTask(12)">Link 2</button>
+        <button class="task-btn ad-task" onclick="loadLinkTask(13)">Link 3</button>
+        <button class="task-btn ad-task" onclick="loadLinkTask(14)">Link 4</button>
+        <button class="task-btn ad-task" onclick="loadLinkTask(15)">Link 5</button>
     </div>
 
     <div id="display-area">
@@ -50,15 +50,16 @@
             <div id="v-timer" class="timer-display">ভিডিও প্লে করুন...</div>
         </div>
 
-        <div id="ad-content" style="display:none;">
-            <i class="fas fa-bullhorn" style="font-size: 50px; color:#ff7675;"></i>
-            <div id="a-timer" class="timer-display">অপেক্ষা করুন: ১০ সেকেন্ড</div>
-            <a href="#" id="ad-link" class="redirect-btn" style="display:none;" target="_blank" onclick="showCode()">GO TO LINK</a>
+        <div id="link-content" style="display:none;">
+            <i class="fas fa-external-link-alt" style="font-size: 50px; color:#ff7675;"></i>
+            <div id="l-instruction">নিচের বাটনে ক্লিক করে ওয়েবসাইট ভিজিট করুন</div>
+            <button id="visit-trigger" class="visit-btn">ভিজিট করুন</button>
+            <div id="a-timer" class="timer-display" style="display:none;">অপেক্ষা করুন: ১০ সেকেন্ড</div>
         </div>
         
         <div id="code-box">
             🎉 কোড: <span id="final-code"></span>
-            <p style="font-size: 14px; font-weight: normal;">স্ক্রিনশট নিয়ে জমা দিন।</p>
+            <p style="font-size: 14px; font-weight: normal;">স্ক্রিনশট নিয়ে প্যানেলে জমা দিন।</p>
         </div>
     </div>
 </div>
@@ -73,11 +74,11 @@
         5: {vid:'O4i4kN_A68U', t:180, c:'TCP-6674-V5'}, 6: {vid:'cPjITHPKHW0', t:300, c:'TCP-1250-V6'},
         7: {vid:'4FAWGwaL3dc', t:300, c:'TCP-7731-V7'}, 8: {vid:'PujqH29FuCM', t:300, c:'TCP-5502-V8'},
         9: {vid:'4JTlUw6MEug', t:300, c:'TCP-4489-V9'}, 10: {vid:'cZU6GZT7wio', t:300, c:'TCP-2026-V10'},
-        11: {url:'https://chonderranimayapori.blogspot.com/', t:10, c:'ADS-9910-X1'},
-        12: {url:'https://lyricloopzone.blogspot.com/2025/12/tumi-toh-sukhei-acho-bondhu-song-lyrics.html?m=1', t:10, c:'ADS-7720-X2'},
-        13: {url:'https://t.me/ChonderRaniMayapori', t:10, c:'ADS-5530-X3'},
-        14: {url:'https://t.me/GmailSellBDChannel', t:10, c:'ADS-3340-X4'},
-        15: {url:'https://t.me/SpinIncomeBD_bot?start=r00125815586', t:10, c:'ADS-1150-X5'}
+        11: {url:'https://chonderranimayapori.blogspot.com/', c:'ADS-9910-X1'},
+        12: {url:'https://lyricloopzone.blogspot.com/2025/12/tumi-toh-sukhei-acho-bondhu-song-lyrics.html?m=1', c:'ADS-7720-X2'},
+        13: {url:'https://t.me/ChonderRaniMayapori', c:'ADS-5530-X3'},
+        14: {url:'https://t.me/GmailSellBDChannel', c:'ADS-3340-X4'},
+        15: {url:'https://t.me/SpinIncomeBD_bot?start=r00125815586', c:'ADS-1150-X5'}
     };
 
     function onYouTubeIframeAPIReady() {
@@ -94,28 +95,37 @@
         player.loadVideoById(data[id].vid);
     }
 
-    function loadAd(id) {
+    function loadLinkTask(id) {
         reset();
-        timeLeft = 10;
         document.getElementById('task-title').innerText = "Link Task " + (id-10);
-        document.getElementById('ad-content').style.display = 'block';
+        document.getElementById('link-content').style.display = 'block';
         document.getElementById('final-code').innerText = data[id].c;
-        document.getElementById('ad-link').href = data[id].url;
         
+        let visitBtn = document.getElementById('visit-trigger');
+        visitBtn.onclick = function() {
+            // ১. ওয়েবসাইট ওপেন হবে
+            window.open(data[id].url, '_blank');
+            
+            // ২. বাটন লুকিয়ে টাইমার শুরু হবে
+            visitBtn.style.display = 'none';
+            document.getElementById('l-instruction').innerText = "লিংক ভিজিট শুরু হয়েছে। ফিরে এসে অপেক্ষা করুন।";
+            document.getElementById('a-timer').style.display = 'block';
+            
+            startAdTimer(10);
+        };
+    }
+
+    function startAdTimer(seconds) {
+        timeLeft = seconds;
         timerInt = setInterval(() => {
             timeLeft--;
             document.getElementById('a-timer').innerText = "অপেক্ষা করুন: " + timeLeft + "s";
             if(timeLeft <= 0) {
                 clearInterval(timerInt);
-                document.getElementById('a-timer').style.display = 'none';
-                document.getElementById('ad-link').style.display = 'inline-block';
+                document.getElementById('link-content').style.display = 'none';
+                document.getElementById('code-box').style.display = 'block';
             }
         }, 1000);
-    }
-
-    function showCode() {
-        document.getElementById('ad-content').style.display = 'none';
-        document.getElementById('code-box').style.display = 'block';
     }
 
     function reset() {
@@ -123,10 +133,11 @@
         isDone = false;
         document.getElementById('display-area').style.display = 'block';
         document.getElementById('video-content').style.display = 'none';
-        document.getElementById('ad-content').style.display = 'none';
+        document.getElementById('link-content').style.display = 'none';
         document.getElementById('code-box').style.display = 'none';
-        document.getElementById('a-timer').style.display = 'block';
-        document.getElementById('ad-link').style.display = 'none';
+        document.getElementById('visit-trigger').style.display = 'inline-block';
+        document.getElementById('l-instruction').innerText = "নিচের বাটনে ক্লিক করে ওয়েবসাইট ভিজিট করুন";
+        document.getElementById('a-timer').style.display = 'none';
         if(player && player.stopVideo) player.stopVideo();
     }
 
